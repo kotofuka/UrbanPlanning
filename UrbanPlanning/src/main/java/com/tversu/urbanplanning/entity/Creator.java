@@ -1,6 +1,7 @@
 package com.tversu.urbanplanning.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Table(name = "creators")
 public class Creator {
     @Id
+    @NotBlank(message = "ФИО не может быть пустым")
     @Column(name = "full_name", length = 200)
     private String fullName;
 
