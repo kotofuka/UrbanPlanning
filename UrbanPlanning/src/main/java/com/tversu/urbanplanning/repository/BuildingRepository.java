@@ -36,7 +36,7 @@ public interface BuildingRepository extends JpaRepository<Building, BuildingId> 
     @Query(value = "SELECT * FROM buildings " +
                     "WHERE city_name = :cityName AND street_name = :streetName",
             nativeQuery = true)
-    List<Building> findBuildingByCityAndStreet(@Param("cityName") String cityName,
+    List<Building> findBuildingsByCityAndStreet(@Param("cityName") String cityName,
                                                @Param("streetName") String streetName);
 
     // find all - найти все
@@ -70,7 +70,7 @@ public interface BuildingRepository extends JpaRepository<Building, BuildingId> 
     // update - изменить улицу и город
     @Modifying
     @Transactional
-    @Query(value = "UPDATE buildings SET street_name = :newStreetName, city_name = :newStreetName " +
+    @Query(value = "UPDATE buildings SET street_name = :newStreetName, city_name = :newCityName " +
                     "WHERE house_number = :houseNumber AND city_name = :oldCityName AND street_name = :oldStreetName",
             nativeQuery = true)
     int updateBuildingStreetAndCity(@Param("houseNumber") String houseNumber,
