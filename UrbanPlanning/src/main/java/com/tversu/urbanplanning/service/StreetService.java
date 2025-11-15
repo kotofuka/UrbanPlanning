@@ -23,9 +23,6 @@ public class StreetService {
 
     // create
     public void createStreet(String streetName, String cityName) {
-        validator.requireNotBlank(streetName, "Название улицы");
-        validator.requireNotBlank(cityName, "Название города");
-
         Optional<City> city = cityRepository.findCityByName(cityName);
         validator.requirePresent(city, "Город '" + cityName + "'");
 
@@ -37,15 +34,11 @@ public class StreetService {
 
     // find - найти по составному ключу
     public Optional<Street> getStreetByNameAndCity(String streetName, String cityName) {
-        validator.requireNotBlank(streetName, "Название улицы");
-        validator.requireNotBlank(cityName, "Название города");
         return streetRepository.findStreetByNameAndCity(streetName, cityName);
     }
 
     // find - найти все улицы города
     public List<Street> getStreetsByCity(String cityName) {
-        validator.requireNotBlank(cityName, "Название города");
-
         Optional<City> city = cityRepository.findCityByName(cityName);
         validator.requirePresent(city, "Город '" + cityName + "'");
 
@@ -59,10 +52,6 @@ public class StreetService {
 
     // update
     public int updateStreetName(String oldStreetName, String newStreetName, String cityName) {
-        validator.requireNotBlank(oldStreetName, "Старое название улицы");
-        validator.requireNotBlank(newStreetName, "Новое название улицы");
-        validator.requireNotBlank(cityName, "Название города");
-
         Optional<Street> oldStreet = streetRepository.findStreetByNameAndCity(oldStreetName, cityName);
         validator.requirePresent(oldStreet, "Улица '" + oldStreetName + "'");
 
@@ -74,9 +63,6 @@ public class StreetService {
 
     // delete
     public int deleteStreet(String streetName, String cityName) {
-        validator.requireNotBlank(streetName, "Название улицы");
-        validator.requireNotBlank(cityName, "Название города");
-
         Optional<Street> street = streetRepository.findStreetByNameAndCity(streetName, cityName);
         validator.requirePresent(street, "Улица '" + streetName + "'");
 

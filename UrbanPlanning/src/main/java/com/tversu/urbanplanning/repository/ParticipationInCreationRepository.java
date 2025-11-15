@@ -53,7 +53,7 @@ public interface ParticipationInCreationRepository extends JpaRepository<Partici
     @Query(value = "SELECT * FROM participations_in_creation", nativeQuery = true)
     List<ParticipationInCreation> findAllParticipations();
 
-    // delete
+    // delete - удалить одно участие для достопримечательности
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM participations_in_creation " +
@@ -71,7 +71,7 @@ public interface ParticipationInCreationRepository extends JpaRepository<Partici
     @Query(value = "DELETE FROM participations_in_creation " +
                     "WHERE landmark_name = :landmarkName AND city_name = :cityName AND street_name = :streetName",
             nativeQuery = true)
-    int deleteParticipationByLandmark(@Param("landmarkName") String landmarkName,
+    int deleteParticipationsByLandmark(@Param("landmarkName") String landmarkName,
                                       @Param("cityName") String cityName,
                                       @Param("streetName") String streetName);
 }

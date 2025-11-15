@@ -23,8 +23,6 @@ public class CityService {
 
     // create
     public void createCity(String name) {
-        validator.requireNotBlank(name, "Название города");
-
         Optional<City> existingCity = cityRepository.findCityByName(name);
         validator.requireAbsent(existingCity, "Город '" + name + "'");
 
@@ -33,7 +31,6 @@ public class CityService {
 
     // find - найти по имени
     public Optional<City> getCityByName(String name) {
-        validator.requireNotBlank(name, "Название города");
         return cityRepository.findCityByName(name);
     }
 
@@ -44,9 +41,6 @@ public class CityService {
 
     // update
     public int updateCity(String oldName, String newName) {
-        validator.requireNotBlank(oldName, "Старое название города");
-        validator.requireNotBlank(newName, "Новое название города");
-
         Optional<City> oldCity = cityRepository.findCityByName(oldName);
         validator.requirePresent(oldCity, "Город '" + oldName + "'");
 
@@ -58,8 +52,6 @@ public class CityService {
 
     // delete
     public int deleteCity(String name) {
-        validator.requireNotBlank(name, "Название города");
-
         Optional<City> city = cityRepository.findCityByName(name);
         validator.requirePresent(city, "Город '" + name + "'");
 

@@ -103,7 +103,7 @@ public interface LandmarkRepository extends JpaRepository<Landmark, LandmarkId> 
     @Query(value = "UPDATE landmarks SET description = :newDescription, latitude = :newLatitude, longitude = :newLongitude " +
                     "WHERE name = :name AND city_name = :cityName AND street_name = :streetName",
             nativeQuery = true)
-    int updateLandmarkCoordinates(@Param("name") String name,
+    int updateLandmarkAdditionalData(@Param("name") String name,
                                   @Param("cityName") String cityName,
                                   @Param("streetName") String streetName,
                                   @Param("newDescription") String newDescription,

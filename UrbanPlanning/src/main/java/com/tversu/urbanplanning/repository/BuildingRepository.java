@@ -28,7 +28,7 @@ public interface BuildingRepository extends JpaRepository<Building, BuildingId> 
     @Query(value = "SELECT * FROM buildings " +
                     "WHERE house_number = :houseNumber AND city_name = :cityName AND street_name = :streetName",
             nativeQuery = true)
-    Optional<Building> findByPrimaryKey(@Param("houseNumber") String houseNumber,
+    Optional<Building> findBuildingByPrimaryKey(@Param("houseNumber") String houseNumber,
                                         @Param("cityName") String cityName,
                                         @Param("streetName") String streetName);
 
