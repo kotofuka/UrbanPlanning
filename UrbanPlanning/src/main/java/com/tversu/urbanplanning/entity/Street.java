@@ -34,4 +34,8 @@ public class Street {
 
     @OneToMany(mappedBy = "street", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Landmark> landmarks;
+
+    public @NotBlank(message = "Название улицы не может быть пустым") String getName() {
+        return name;
+    }
 }

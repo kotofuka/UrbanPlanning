@@ -17,11 +17,16 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class LandmarkService {
     private final LandmarkRepository landmarkRepository;
     private final StreetRepository streetRepository;
     private final ValidatorUtil validator;
+
+    public LandmarkService(LandmarkRepository landmarkRepository, StreetRepository streetRepository, ValidatorUtil validator) {
+        this.landmarkRepository = landmarkRepository;
+        this.streetRepository = streetRepository;
+        this.validator = validator;
+    }
 
     // create
     public void createLandmark(AllDataLandmarkRequest request){

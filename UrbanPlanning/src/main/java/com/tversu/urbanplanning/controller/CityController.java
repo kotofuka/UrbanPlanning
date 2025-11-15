@@ -13,9 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cities")
-@RequiredArgsConstructor
 public class CityController {
     private final CityService cityService;
+
+    public CityController(CityService cityService) {
+        this.cityService = cityService;
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<City>> getAllCities() {

@@ -21,4 +21,8 @@ public class Creator {
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ParticipationInCreation> participations;
+
+    public @NotBlank(message = "ФИО не может быть пустым") String getFullName() {
+        return fullName;
+    }
 }

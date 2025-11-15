@@ -12,10 +12,14 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class CreatorService {
     private final CreatorRepository creatorRepository;
     private final ValidatorUtil validator;
+
+    public CreatorService(CreatorRepository creatorRepository, ValidatorUtil validator) {
+        this.creatorRepository = creatorRepository;
+        this.validator = validator;
+    }
 
     // create
     public void createCreator(String fullName) {

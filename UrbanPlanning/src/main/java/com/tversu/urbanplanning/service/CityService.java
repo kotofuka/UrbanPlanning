@@ -13,13 +13,17 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
 @Validated
 @Transactional
 public class CityService {
     private final CityRepository cityRepository;
     private final ValidatorUtil validator;
+
+    public CityService(CityRepository cityRepository, ValidatorUtil validator) {
+        this.cityRepository = cityRepository;
+        this.validator = validator;
+    }
 
     // create
     public void createCity(String name) {

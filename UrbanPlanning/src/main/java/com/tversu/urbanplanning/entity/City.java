@@ -25,4 +25,8 @@ public class City {
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Street> streets;
+
+    public @NotBlank(message = "Название города не может быть пустым") String getName() {
+        return name;
+    }
 }

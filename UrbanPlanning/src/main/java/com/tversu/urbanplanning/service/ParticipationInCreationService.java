@@ -16,12 +16,21 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class ParticipationInCreationService {
     private final ParticipationInCreationRepository participationInCreationRepository;
     private final LandmarkRepository landmarkRepository;
     private final CreatorRepository creatorRepository;
     private final ValidatorUtil validator;
+
+    public ParticipationInCreationService(ParticipationInCreationRepository participationInCreationRepository,
+                                          LandmarkRepository landmarkRepository,
+                                          CreatorRepository creatorRepository,
+                                          ValidatorUtil validator) {
+        this.participationInCreationRepository = participationInCreationRepository;
+        this.landmarkRepository = landmarkRepository;
+        this.creatorRepository = creatorRepository;
+        this.validator = validator;
+    }
 
     // create
     public void createParticipation(String landmarkName, String cityName, String streetName, String creatorName) {

@@ -14,12 +14,17 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class BuildingService {
     private final BuildingRepository buildingRepository;
     private final StreetRepository streetRepository;
     private final ValidatorUtil validator;
 
+
+    public BuildingService(BuildingRepository buildingRepository, StreetRepository streetRepository, ValidatorUtil validator) {
+        this.buildingRepository = buildingRepository;
+        this.streetRepository = streetRepository;
+        this.validator = validator;
+    }
 
     // create
     public void createBuilding(String houseNumber, String cityName, String streetName) {
