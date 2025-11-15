@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface LandmarkRepository extends JpaRepository<Landmark, LandmarkId> {
+
     // create
     @Modifying
     @Transactional
@@ -55,7 +56,7 @@ public interface LandmarkRepository extends JpaRepository<Landmark, LandmarkId> 
     // update - обновить описание
     @Modifying
     @Transactional
-    @Query(value = "UPDATE landmarks SET description = :newDecription " +
+    @Query(value = "UPDATE landmarks SET description = :newDescription " +
                     "WHERE name = :name AND city_name = :cityName AND street_name = :streetName",
             nativeQuery = true)
     int updateLandmarkDescription(@Param("name") String name,

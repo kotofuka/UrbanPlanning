@@ -1,30 +1,58 @@
 package com.tversu.urbanplanning.entity.IdClass;
 
-import com.tversu.urbanplanning.entity.City;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Embeddable
 public class StreetId implements Serializable {
+    @Column(name = "name", length = 100)
     private String name;
-    private City city;
+
+    @Column(name = "city_name", length = 100)
+    private String cityName;
+
+    public StreetId() {}
+
+    public StreetId(String name, String cityName) {
+        this.name = name;
+        this.cityName = cityName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-
-        StreetId st = (StreetId) obj;
-        return name.equals(st.name) && city.equals(st.city);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        StreetId that = (StreetId) obj;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(cityName, that.cityName);
     }
 
     @Override
     public int hashCode() {
-        return (name + city.getName()).hashCode();
+        return Objects.hash(name, cityName);
+    }
+
+    @Override
+    public String toString() {
+        return name + " (city: " + cityName + ")";
     }
 }

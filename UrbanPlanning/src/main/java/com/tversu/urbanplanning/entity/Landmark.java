@@ -4,23 +4,24 @@ import com.tversu.urbanplanning.entity.IdClass.LandmarkId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@IdClass(LandmarkId.class)
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "landmarks")
 public class Landmark {
-    @Id
-    @NotBlank(message = "Название достопримечательности не может быть пустым")
-    @Column(name = "name", length = 200)
-    private String name;
+
+    @EmbeddedId
+    private LandmarkId id;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -37,21 +38,18 @@ public class Landmark {
     @Column(name = "longitude", precision = 11, scale = 8)
     private BigDecimal longitude;
 
-    @Id
-    @NotNull(message = "Город не может быть пустым")
     @ManyToOne
-    @JoinColumn(name = "city_name")
+    @JoinColumn(name = "city_name", insertable = false, updatable = false)
     private City city;
 
-    @Id
-    @NotNull(message = "Улица не может быть пустой")
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "street_name", referencedColumnName = "name"),
+            @JoinColumn(name = "street_name", referencedColumnName = "name", insertable = false, updatable = false),
             @JoinColumn(name = "city_name", referencedColumnName = "city_name", insertable = false, updatable = false)
     })
     private Street street;
 
-    @OneToMany(mappedBy = "landmark", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ParticipationInCreation> participations;
+    @OneToMany(mappedBy = "landmark", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<ParticipationInCreation> participations = new HashSet<>();
 }

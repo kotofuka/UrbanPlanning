@@ -2,32 +2,31 @@ package com.tversu.urbanplanning.entity;
 
 import com.tversu.urbanplanning.entity.IdClass.ParticipationInCreationId;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
+import lombok.NoArgsConstructor;
 
 @Data
-@IdClass(ParticipationInCreationId.class)
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "participations_in_creation")
 public class ParticipationInCreation {
-    @Id
-    @NotNull(message = "Достопримечательность не может быть пустой")
+
+    @EmbeddedId
+    private ParticipationInCreationId id;
+
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "landmark_name", referencedColumnName = "name"),
-            @JoinColumn(name = "city_name", referencedColumnName = "city_name"),
-            @JoinColumn(name = "street_name", referencedColumnName = "street_name")
+            @JoinColumn(name = "landmark_name", referencedColumnName = "name", insertable = false, updatable = false),
+            @JoinColumn(name = "city_name", referencedColumnName = "city_name", insertable = false, updatable = false),
+            @JoinColumn(name = "street_name", referencedColumnName = "street_name", insertable = false, updatable = false)
     })
     private Landmark landmark;
 
-    @Id
-    @NotNull(message = "Создатель не может быть пустым")
     @ManyToOne
-    @JoinColumn(name = "creator_full_name")
+    @JoinColumn(name = "creator_full_name", insertable = false, updatable = false)
     private Creator creator;
 }

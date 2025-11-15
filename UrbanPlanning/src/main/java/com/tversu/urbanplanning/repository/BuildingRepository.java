@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface BuildingRepository extends JpaRepository<Building, BuildingId> {
+
     // create
     @Modifying
     @Transactional

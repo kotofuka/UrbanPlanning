@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface StreetRepository extends JpaRepository<Street, StreetId> {
+
     // create
     @Modifying
     @Transactional

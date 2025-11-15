@@ -1,41 +1,36 @@
 package com.tversu.urbanplanning.entity;
 
-
+import com.tversu.urbanplanning.entity.IdClass.StreetId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
-
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
+@Builder(toBuilder = true)
 @Entity
-@IdClass(Street.class)
 @Table(name = "streets")
 public class Street {
-    @Id
-    @NotBlank(message = "Название улицы не может быть пустым")
-    @Column(name = "name", length = 100)
-    private String name;
 
-    @Id
-    @NotNull(message = "Город не может быть пустым")
+    @EmbeddedId
+    private StreetId id;
+
     @ManyToOne
-    @JoinColumn(name = "city_name")
+    @JoinColumn(name = "city_name", insertable = false, updatable = false)
     private City city;
 
-    @OneToMany(mappedBy = "street", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Building> buildings;
+    @OneToMany(mappedBy = "street", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<Building> buildings = new HashSet<>();
 
-    @OneToMany(mappedBy = "street", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Landmark> landmarks;
-
-    public @NotBlank(message = "Название улицы не может быть пустым") String getName() {
-        return name;
-    }
+    @OneToMany(mappedBy = "street", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<Landmark> landmarks = new HashSet<>();
 }
