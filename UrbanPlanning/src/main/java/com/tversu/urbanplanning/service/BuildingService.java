@@ -20,6 +20,7 @@ public class BuildingService {
     private final StreetRepository streetRepository;
     private final ValidatorUtil validator;
 
+
     // create
     public void createBuilding(String houseNumber, String cityName, String streetName) {
         Optional<Street> street = streetRepository.findStreetByNameAndCity(streetName, cityName);
