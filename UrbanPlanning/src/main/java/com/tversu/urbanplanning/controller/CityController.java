@@ -4,6 +4,7 @@ import com.tversu.urbanplanning.dto.CityDto.CityPrimaryKeyRequest;
 import com.tversu.urbanplanning.dto.CityDto.CityUpdateRequest;
 import com.tversu.urbanplanning.entity.City;
 import com.tversu.urbanplanning.service.CityService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class CityController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<City> getCityByName(@RequestBody CityPrimaryKeyRequest request)
+    public ResponseEntity<City> getCityByName(@RequestBody @Valid CityPrimaryKeyRequest request)
     {
         return cityService.getCityByName(request.getName())
                 .map(ResponseEntity::ok)
@@ -36,7 +37,7 @@ public class CityController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createCity(@RequestBody CityPrimaryKeyRequest request) {
+    public ResponseEntity<Void> createCity(@RequestBody @Valid CityPrimaryKeyRequest request) {
         try{
             cityService.createCity(request.getName());
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -46,7 +47,7 @@ public class CityController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateCity(@RequestBody CityUpdateRequest request) {
+    public ResponseEntity<Void> updateCity(@RequestBody @Valid CityUpdateRequest request) {
         try{
             int result = cityService.updateCity(request.getOldName(), request.getNewName());
             return result > 0
@@ -58,7 +59,7 @@ public class CityController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteCity(@RequestBody CityPrimaryKeyRequest request) {
+    public ResponseEntity<Void> deleteCity(@RequestBody @Valid CityPrimaryKeyRequest request) {
         try {
             int result = cityService.deleteCity(request.getName());
             return result > 0 ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

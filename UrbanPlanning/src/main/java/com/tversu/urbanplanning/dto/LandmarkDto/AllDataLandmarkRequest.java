@@ -22,7 +22,8 @@ public record AllDataLandmarkRequest(
         @DecimalMax(value = "180.0")
         BigDecimal longitude,
 
-        @NotBlank(message = "Город обязателен")
+        @NotBlank(message = "Имя города не может быть пустым")
+        @Size(min = 1, max = 100, message = "Имя города должно быть от 1 до 100 символов")
         String cityName,
 
         @NotBlank(message = "Улица обязательна")

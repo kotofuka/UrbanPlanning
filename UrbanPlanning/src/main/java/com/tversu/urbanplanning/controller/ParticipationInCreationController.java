@@ -1,11 +1,11 @@
 package com.tversu.urbanplanning.controller;
 
-import com.tversu.urbanplanning.dto.CreatorDto.CreatorPrimaryKeyRequest;
 import com.tversu.urbanplanning.dto.InfoOfCreatorRequest;
 import com.tversu.urbanplanning.dto.ParticipationInCreationDto.ParticipationLandmarkRequest;
 import com.tversu.urbanplanning.dto.ParticipationInCreationDto.ParticipationPrimaryKeyRequest;
 import com.tversu.urbanplanning.dto.ParticipationInCreationDto.ParticipationResponseDto;
 import com.tversu.urbanplanning.service.ParticipationInCreationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,7 @@ public class ParticipationInCreationController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ParticipationResponseDto> getParticipationByKey(@RequestBody ParticipationPrimaryKeyRequest request) {
+    public ResponseEntity<ParticipationResponseDto> getParticipationByKey(@RequestBody @Valid ParticipationPrimaryKeyRequest request) {
         return participationInCreationService.getParticipationByKey(
                         request.getLandmarkName(),
                         request.getCityName(),
@@ -44,7 +44,7 @@ public class ParticipationInCreationController {
     }
 
     @GetMapping("/by-landmark")
-    public ResponseEntity<List<ParticipationResponseDto>> getParticipationsByLandmark(@RequestBody ParticipationLandmarkRequest request) {
+    public ResponseEntity<List<ParticipationResponseDto>> getParticipationsByLandmark(@RequestBody @Valid ParticipationLandmarkRequest request) {
         try {
             var participations = participationInCreationService.getParticipationsByLandmark(
                     request.getLandmarkName(),
@@ -60,7 +60,7 @@ public class ParticipationInCreationController {
     }
 
     @GetMapping("/by-creator")
-    public ResponseEntity<List<ParticipationResponseDto>> getParticipationsByCreator(@RequestBody InfoOfCreatorRequest request) {
+    public ResponseEntity<List<ParticipationResponseDto>> getParticipationsByCreator(@RequestBody @Valid InfoOfCreatorRequest request) {
         try {
             var participations = participationInCreationService.getParticipationsByCreator(request.getCreatorFullName());
             var dtos = participations.stream()
@@ -73,7 +73,7 @@ public class ParticipationInCreationController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createParticipation(@RequestBody ParticipationPrimaryKeyRequest request) {
+    public ResponseEntity<Void> createParticipation(@RequestBody @Valid ParticipationPrimaryKeyRequest request) {
         try {
             participationInCreationService.createParticipation(
                     request.getLandmarkName(),
@@ -88,7 +88,7 @@ public class ParticipationInCreationController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteParticipation(@RequestBody ParticipationPrimaryKeyRequest request) {
+    public ResponseEntity<Void> deleteParticipation(@RequestBody @Valid ParticipationPrimaryKeyRequest request) {
         try {
             int result = participationInCreationService.deleteParticipation(
                     request.getLandmarkName(),
@@ -103,7 +103,7 @@ public class ParticipationInCreationController {
     }
 
     @DeleteMapping("/by-landmark")
-    public ResponseEntity<Void> deleteParticipationsByLandmark(@RequestBody ParticipationLandmarkRequest request) {
+    public ResponseEntity<Void> deleteParticipationsByLandmark(@RequestBody @Valid ParticipationLandmarkRequest request) {
         try {
             int result = participationInCreationService.deleteParticipationsByLandmark(
                     request.getLandmarkName(),

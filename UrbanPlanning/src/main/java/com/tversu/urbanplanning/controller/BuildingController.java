@@ -3,6 +3,7 @@ package com.tversu.urbanplanning.controller;
 import com.tversu.urbanplanning.dto.BuildingDto.*;
 import com.tversu.urbanplanning.dto.InfoOfCityAndStreetRequest;
 import com.tversu.urbanplanning.service.BuildingService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +31,14 @@ public class BuildingController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<BuildingResponseDto> getBuildingByPrimaryKey(@RequestBody BuildingPrimaryKeyRequest request) {
+    public ResponseEntity<BuildingResponseDto> getBuildingByPrimaryKey(@RequestBody @Valid BuildingPrimaryKeyRequest request) {
         return buildingService.getBuildingByPrimaryKey(request.getHouseNumber(), request.getCityName(), request.getStreetName())
                 .map(building -> ResponseEntity.ok(BuildingResponseDto.fromEntity(building)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/by-street")
-    public ResponseEntity<List<BuildingResponseDto>> getBuildingsByStreet(@RequestBody InfoOfCityAndStreetRequest request) {
+    public ResponseEntity<List<BuildingResponseDto>> getBuildingsByStreet(@RequestBody @Valid InfoOfCityAndStreetRequest request) {
         try {
             var buildings = buildingService.getBuildingsByCityAndStreet(request.getStreetName(), request.getCityName());
             System.out.println(buildings.size());
@@ -51,7 +52,7 @@ public class BuildingController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createBuilding(@RequestBody BuildingPrimaryKeyRequest request) {
+    public ResponseEntity<Void> createBuilding(@RequestBody @Valid BuildingPrimaryKeyRequest request) {
         try {
             buildingService.createBuilding(request.getHouseNumber(), request.getCityName(), request.getStreetName());
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -61,7 +62,7 @@ public class BuildingController {
     }
 
     @PutMapping("/house-number")
-    public ResponseEntity<Void> updateBuildingHouseNumber(@RequestBody BuildingUpdateHouseNumberRequest request) {
+    public ResponseEntity<Void> updateBuildingHouseNumber(@RequestBody @Valid BuildingUpdateHouseNumberRequest request) {
         try {
             int result = buildingService.updateBuildingHouseNumber(
                     request.getOldHouseNumber(),
@@ -76,7 +77,7 @@ public class BuildingController {
     }
 
     @PutMapping("/street-only")
-    public ResponseEntity<Void> updateBuildingStreetOnly(@RequestBody BuildingUpdateStreetOnlyRequest request) {
+    public ResponseEntity<Void> updateBuildingStreetOnly(@RequestBody @Valid BuildingUpdateStreetOnlyRequest request) {
         try {
             int result = buildingService.updateBuildingStreetOnly(
                     request.getHouseNumber(),
@@ -91,7 +92,7 @@ public class BuildingController {
     }
 
     @PutMapping("/street-and-city")
-    public ResponseEntity<Void> updateBuildingStreetAndCity(@RequestBody BuildingUpdateStreetAndCityRequest request) {
+    public ResponseEntity<Void> updateBuildingStreetAndCity(@RequestBody @Valid BuildingUpdateStreetAndCityRequest request) {
         try {
             int result = buildingService.updateBuildingStreetAndCity(
                     request.getHouseNumber(),
@@ -107,7 +108,7 @@ public class BuildingController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteBuilding(@RequestBody BuildingPrimaryKeyRequest request) {
+    public ResponseEntity<Void> deleteBuilding(@RequestBody @Valid BuildingPrimaryKeyRequest request) {
         try {
             int result = buildingService.deleteBuilding(request.getHouseNumber(), request.getCityName(), request.getStreetName());
             return result > 0 ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

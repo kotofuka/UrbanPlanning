@@ -4,6 +4,7 @@ import com.tversu.urbanplanning.dto.InfoOfCityAndStreetRequest;
 import com.tversu.urbanplanning.dto.LandmarkDto.*;
 import com.tversu.urbanplanning.dto.InfoOfCityRequest;
 import com.tversu.urbanplanning.service.LandmarkService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +32,14 @@ public class LandmarkController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<LandmarkResponseDto> getLandmarkByKey(@RequestBody LandmarkPrimaryKeyRequest request) {
+    public ResponseEntity<LandmarkResponseDto> getLandmarkByKey(@RequestBody @Valid LandmarkPrimaryKeyRequest request) {
         return landmarkService.getLandmarkByKey(request.getName(), request.getCityName(), request.getStreetName())
                 .map(landmark -> ResponseEntity.ok(LandmarkResponseDto.fromEntity(landmark)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/by-city")
-    public ResponseEntity<List<LandmarkResponseDto>> getLandmarksByCity(@RequestBody InfoOfCityRequest request) {
+    public ResponseEntity<List<LandmarkResponseDto>> getLandmarksByCity(@RequestBody @Valid InfoOfCityRequest request) {
         var landmarks = landmarkService.getLandmarksByCity(request.getCityName());
         var dtos = landmarks.stream()
                 .map(LandmarkResponseDto::fromEntity)
@@ -47,7 +48,7 @@ public class LandmarkController {
     }
 
     @GetMapping("/by-street")
-    public ResponseEntity<List<LandmarkResponseDto>> getLandmarksByStreet(@RequestBody InfoOfCityAndStreetRequest request) {
+    public ResponseEntity<List<LandmarkResponseDto>> getLandmarksByStreet(@RequestBody @Valid InfoOfCityAndStreetRequest request) {
         try {
             var landmarks = landmarkService.getLandmarksByStreet(request.getStreetName(), request.getCityName());
             var dtos = landmarks.stream()
@@ -60,7 +61,7 @@ public class LandmarkController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createLandmark(@RequestBody AllDataLandmarkRequest request) {
+    public ResponseEntity<Void> createLandmark(@RequestBody @Valid AllDataLandmarkRequest request) {
         try {
             landmarkService.createLandmark(request);
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -70,7 +71,7 @@ public class LandmarkController {
     }
 
     @PutMapping("/description")
-    public ResponseEntity<Void> updateLandmarkDescription(@RequestBody LandmarkDescriptionUpdateRequest request) {
+    public ResponseEntity<Void> updateLandmarkDescription(@RequestBody @Valid LandmarkDescriptionUpdateRequest request) {
         try {
             int result = landmarkService.updateLandmarkDescription(
                     request.getName(),
@@ -85,7 +86,7 @@ public class LandmarkController {
     }
 
     @PutMapping("/coordinates")
-    public ResponseEntity<Void> updateLandmarkCoordinates(@RequestBody LandmarkCoordinatesUpdateRequest request) {
+    public ResponseEntity<Void> updateLandmarkCoordinates(@RequestBody @Valid LandmarkCoordinatesUpdateRequest request) {
         try {
             UpdateLandmarkCoordinatesOnlyRequest coordRequest = new UpdateLandmarkCoordinatesOnlyRequest(
                     request.getLatitude(),
@@ -104,7 +105,7 @@ public class LandmarkController {
     }
 
     @PutMapping("/latitude")
-    public ResponseEntity<Void> updateLandmarkLatitude(@RequestBody LandmarkLatitudeUpdateRequest request) {
+    public ResponseEntity<Void> updateLandmarkLatitude(@RequestBody @Valid LandmarkLatitudeUpdateRequest request) {
         try {
             int result = landmarkService.updateLandmarkLatitude(
                     request.getName(),
@@ -119,7 +120,7 @@ public class LandmarkController {
     }
 
     @PutMapping("/longitude")
-    public ResponseEntity<Void> updateLandmarkLongitude(@RequestBody LandmarkLongitudeUpdateRequest request) {
+    public ResponseEntity<Void> updateLandmarkLongitude(@RequestBody @Valid LandmarkLongitudeUpdateRequest request) {
         try {
             int result = landmarkService.updateLandmarkLongitude(
                     request.getName(),
@@ -134,7 +135,7 @@ public class LandmarkController {
     }
 
     @PutMapping("/additional-data")
-    public ResponseEntity<Void> updateLandmarkAdditionalData(@RequestBody AllDataLandmarkRequest request) {
+    public ResponseEntity<Void> updateLandmarkAdditionalData(@RequestBody @Valid AllDataLandmarkRequest request) {
         try {
             int result = landmarkService.updateLandmarkAdditionalData(request);
             return result > 0 ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
@@ -144,7 +145,7 @@ public class LandmarkController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteLandmark(@RequestBody LandmarkPrimaryKeyRequest request) {
+    public ResponseEntity<Void> deleteLandmark(@RequestBody @Valid LandmarkPrimaryKeyRequest request) {
         try {
             int result = landmarkService.deleteLandmark(request.getName(), request.getCityName(), request.getStreetName());
             return result > 0 ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

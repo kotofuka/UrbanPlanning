@@ -4,6 +4,7 @@ import com.tversu.urbanplanning.dto.CreatorDto.CreatorPrimaryKeyRequest;
 import com.tversu.urbanplanning.dto.CreatorDto.CreatorResponseDto;
 import com.tversu.urbanplanning.dto.CreatorDto.CreatorUpdateRequest;
 import com.tversu.urbanplanning.service.CreatorService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +32,14 @@ public class CreatorController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<CreatorResponseDto> getCreatorByName(@RequestBody CreatorPrimaryKeyRequest request) {
+    public ResponseEntity<CreatorResponseDto> getCreatorByName(@RequestBody @Valid CreatorPrimaryKeyRequest request) {
         return creatorService.getCreatorByName(request.getFullName())
                 .map(creator -> ResponseEntity.ok(CreatorResponseDto.fromEntity(creator)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Void> createCreator(@RequestBody CreatorPrimaryKeyRequest request) {
+    public ResponseEntity<Void> createCreator(@RequestBody @Valid CreatorPrimaryKeyRequest request) {
         try {
             creatorService.createCreator(request.getFullName());
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -48,7 +49,7 @@ public class CreatorController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateCreator(@RequestBody CreatorUpdateRequest request) {
+    public ResponseEntity<Void> updateCreator(@RequestBody @Valid CreatorUpdateRequest request) {
         try {
             int result = creatorService.updateCreator(request.getOldFullName(), request.getNewFullName());
             return result > 0 ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
@@ -58,7 +59,7 @@ public class CreatorController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteCreator(@RequestBody CreatorPrimaryKeyRequest request) {
+    public ResponseEntity<Void> deleteCreator(@RequestBody @Valid CreatorPrimaryKeyRequest request) {
         try {
             int result = creatorService.deleteCreator(request.getFullName());
             return result > 0 ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

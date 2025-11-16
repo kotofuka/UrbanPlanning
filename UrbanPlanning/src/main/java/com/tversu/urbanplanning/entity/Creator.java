@@ -2,6 +2,7 @@ package com.tversu.urbanplanning.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,8 @@ import java.util.Set;
 public class Creator {
 
     @Id
-    @NotBlank(message = "ФИО не может быть пустым")
+    @NotBlank(message = "Полное имя создателя не может быть пустым")
+    @Size(min = 1, max = 200, message = "Полное имя должно быть от 1 до 200 символов")
     @Column(name = "full_name", length = 200)
     private String fullName;
 
