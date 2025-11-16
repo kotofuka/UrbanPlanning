@@ -1,11 +1,14 @@
 package com.tversu.urbanplanning.entity.IdClass;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Data
 @Embeddable
 public class StreetId implements Serializable {
     @Column(name = "name", length = 100)
@@ -53,6 +56,6 @@ public class StreetId implements Serializable {
 
     @Override
     public String toString() {
-        return name + " (city: " + cityName + ")";
+        return name + "\', city=\'" + cityName + "\'";
     }
 }

@@ -1,5 +1,6 @@
 package com.tversu.urbanplanning.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tversu.urbanplanning.entity.IdClass.LandmarkId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -40,6 +41,7 @@ public class Landmark {
 
     @ManyToOne
     @JoinColumn(name = "city_name", insertable = false, updatable = false)
+    @JsonIgnore
     private City city;
 
     @ManyToOne
@@ -47,9 +49,37 @@ public class Landmark {
             @JoinColumn(name = "street_name", referencedColumnName = "name", insertable = false, updatable = false),
             @JoinColumn(name = "city_name", referencedColumnName = "city_name", insertable = false, updatable = false)
     })
+    @JsonIgnore
     private Street street;
 
     @OneToMany(mappedBy = "landmark", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private Set<ParticipationInCreation> participations = new HashSet<>();
+
+    public LandmarkId getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public @NotNull(message = "Широта не может быть пустой") @DecimalMin("-90.0") @DecimalMax("90.0") BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public @NotNull(message = "Долгота не может быть пустой") @DecimalMin("-180.0") @DecimalMax("180.0") BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Landmark{" +
+                "name=" + id.toString() +
+                ", description=\'" + description + '\'' +
+                ", latitude=\'" + latitude +
+                "\', longitude=\'" + longitude + "\'" +
+                '}';
+    }
 }

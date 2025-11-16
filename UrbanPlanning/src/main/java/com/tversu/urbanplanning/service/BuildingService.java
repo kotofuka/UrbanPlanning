@@ -48,7 +48,7 @@ public class BuildingService {
         Optional<Street> street = streetRepository.findStreetByNameAndCity(streetName, cityName);
         validator.requirePresent(street, "Улица '" + streetName + "'");
 
-        return buildingRepository.findBuildingsByCityAndStreet(streetName, cityName);
+        return buildingRepository.findBuildingsByCityAndStreet(cityName, streetName);
     }
 
     // find - найти все

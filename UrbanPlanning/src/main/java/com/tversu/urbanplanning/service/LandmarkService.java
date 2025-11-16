@@ -1,13 +1,12 @@
 package com.tversu.urbanplanning.service;
 
 import com.tversu.urbanplanning.dto.LandmarkDto.AllDataLandmarkRequest;
-import com.tversu.urbanplanning.dto.LandmarkDto.UpdateLandmarkCoordinatesRequest;
+import com.tversu.urbanplanning.dto.LandmarkDto.UpdateLandmarkCoordinatesOnlyRequest;
 import com.tversu.urbanplanning.entity.Landmark;
 import com.tversu.urbanplanning.entity.Street;
 import com.tversu.urbanplanning.repository.LandmarkRepository;
 import com.tversu.urbanplanning.repository.StreetRepository;
 import com.tversu.urbanplanning.util.ValidatorUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,7 +80,7 @@ public class LandmarkService {
 
     // update - обновить обе координаты
     public int updateLandmarkCoordinates(String name, String cityName, String streetName,
-                                         UpdateLandmarkCoordinatesRequest request){
+                                         UpdateLandmarkCoordinatesOnlyRequest request){
         Optional<Landmark> landmark = landmarkRepository.findLandmarkByPrimaryKey(name, cityName, streetName);
         validator.requirePresent(landmark, "Достопримечательность '" + name + "'");
 

@@ -66,6 +66,6 @@ public class BuildingId implements Serializable {
 
     @Override
     public String toString() {
-        return houseNumber + " (city: " + cityName + ", street: " + streetName + ")";
+        return houseNumber + "\' city=\'" + cityName + "\', street=\'" + streetName + "\'";
     }
 }

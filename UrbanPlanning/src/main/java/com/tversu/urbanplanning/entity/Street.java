@@ -1,8 +1,8 @@
 package com.tversu.urbanplanning.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tversu.urbanplanning.entity.IdClass.StreetId;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,13 +24,27 @@ public class Street {
 
     @ManyToOne
     @JoinColumn(name = "city_name", insertable = false, updatable = false)
+    @JsonIgnore
     private City city;
 
     @OneToMany(mappedBy = "street", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private Set<Building> buildings = new HashSet<>();
 
     @OneToMany(mappedBy = "street", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private Set<Landmark> landmarks = new HashSet<>();
+
+    public StreetId getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Street{" +
+                "name='" + id.toString() +
+                '}';
+    }
 }

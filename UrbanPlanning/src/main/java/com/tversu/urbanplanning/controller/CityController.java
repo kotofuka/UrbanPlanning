@@ -1,21 +1,17 @@
 package com.tversu.urbanplanning.controller;
 
-import com.tversu.urbanplanning.dto.CityDto;
+import com.tversu.urbanplanning.dto.CityDto.CityPrimaryKeyRequest;
+import com.tversu.urbanplanning.dto.CityDto.CityUpdateRequest;
 import com.tversu.urbanplanning.entity.City;
 import com.tversu.urbanplanning.service.CityService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cities")
+@RequestMapping("/urban_planning/admin_panel/cities")
 public class CityController {
     private final CityService cityService;
 
@@ -23,14 +19,52 @@ public class CityController {
         this.cityService = cityService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<String>> getAllCities() {
-        var cites = cityService.getAllCities();
-
-        System.out.println(cites.getFirst());
-
-        return !cites.isEmpty()
-                ? ResponseEntity.ok(cites.stream().map(City::toString).toList())
-                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @GetMapping
+    public ResponseEntity<List<City>> getAllCities() {
+        var cities = cityService.getAllCities();
+        return !cities.isEmpty()
+                ?ResponseEntity.ok(cities)
+                :ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<City> getCityByName(@RequestBody CityPrimaryKeyRequest request)
+    {
+        return cityService.getCityByName(request.getName())
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createCity(@RequestBody CityPrimaryKeyRequest request) {
+        try{
+            cityService.createCity(request.getName());
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> updateCity(@RequestBody CityUpdateRequest request) {
+        try{
+            int result = cityService.updateCity(request.getOldName(), request.getNewName());
+            return result > 0
+                    ? ResponseEntity.ok().build()
+                    : ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCity(@RequestBody CityPrimaryKeyRequest request) {
+        try {
+            int result = cityService.deleteCity(request.getName());
+            return result > 0 ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

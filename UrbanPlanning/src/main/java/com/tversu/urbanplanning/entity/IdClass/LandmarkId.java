@@ -66,6 +66,6 @@ public class LandmarkId implements Serializable {
 
     @Override
     public String toString() {
-        return name + " (city: " + cityName + ", street: " + streetName + ")";
+        return name + "\', city=\'" + cityName + "\', street=\'" + streetName + "\'";
     }
 }

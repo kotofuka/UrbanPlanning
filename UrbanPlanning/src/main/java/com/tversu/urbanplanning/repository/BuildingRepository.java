@@ -84,7 +84,7 @@ public interface BuildingRepository extends JpaRepository<Building, BuildingId> 
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM buildings " +
-                    "WHERE house_number = :house_name AND city_name = :cityName AND street_name = :streetName",
+                    "WHERE house_number = :houseNumber AND city_name = :cityName AND street_name = :streetName",
             nativeQuery = true)
     int deleteBuilding(@Param("houseNumber") String houseNumber,
                        @Param("cityName") String cityName,

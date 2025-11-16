@@ -26,4 +26,15 @@ public class Creator {
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<ParticipationInCreation> participations = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Creator{" +
+                "fullName='" + fullName + '\'' +
+                '}';
+    }
+
+    public @NotBlank(message = "ФИО не может быть пустым") String getFullName() {
+        return fullName;
+    }
 }

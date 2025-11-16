@@ -79,6 +79,6 @@ public class ParticipationInCreationId implements Serializable {
 
     @Override
     public String toString() {
-        return landmarkName + " (creator: " + creatorFullName + ", city: " + cityName + ", street: " + streetName + ")";
+        return landmarkName + "\', creator=\'" + creatorFullName + "\', city=\'" + cityName + "\', street=\'" + streetName + "\'";
     }
 }

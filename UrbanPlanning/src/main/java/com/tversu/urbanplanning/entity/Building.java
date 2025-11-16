@@ -1,5 +1,6 @@
 package com.tversu.urbanplanning.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tversu.urbanplanning.entity.IdClass.BuildingId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class Building {
 
     @ManyToOne
     @JoinColumn(name = "city_name", insertable = false, updatable = false)
+    @JsonIgnore
     private City city;
 
     @ManyToOne
@@ -24,5 +26,17 @@ public class Building {
             @JoinColumn(name = "street_name", referencedColumnName = "name", insertable = false, updatable = false),
             @JoinColumn(name = "city_name", referencedColumnName = "city_name", insertable = false, updatable = false)
     })
+    @JsonIgnore
     private Street street;
+
+    @Override
+    public String toString() {
+        return "Building{" +
+                "name=" + id.toString() +
+                '}';
+    }
+
+    public BuildingId getId() {
+        return id;
+    }
 }
